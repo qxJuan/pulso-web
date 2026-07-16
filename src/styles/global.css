@@ -204,8 +204,8 @@ details[open] summary .plus-icon {
   position: absolute;
   top: 0.75rem;
   right: -0.5rem;
-  width: 54%;
-  height: 36%;
+  width: 44%;
+  height: 30%;
   z-index: 5;
   pointer-events: none;
 }

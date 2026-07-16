@@ -56,33 +56,6 @@ export const products: Product[] = [
     waMessage: 'Hola PULSO, me interesan los PulsoPods Pro 3. ¿Me cuentan más?',
   },
   {
-    slug: 'pro-2',
-    badge: 'Clásico',
-    name: 'Pro 2',
-    tagline: 'El equilibrio entre sonido curado y precio justo.',
-    originalPrice: 105000,
-    price: 80000,
-    warrantyText: '1 mes de garantía',
-    description:
-      'El punto medio de la colección: mismo sonido curado PULSO, diseño ergonómico probado, sin la traducción en tiempo real del Pro 3.',
-    specs: [
-      { icon: 'audio', text: 'Sonido curado PULSO' },
-      { icon: 'ajuste', text: 'Diseño ergonómico probado' },
-      { icon: 'almohadillas', text: '3 pares de puntas incluidas' },
-    ],
-    benefits: [
-      'Ajuste seguro que no se cae con el movimiento',
-      'Sonido parejo para música y llamadas todo el día',
-      'Mejor relación sonido/precio de la colección',
-    ],
-    idealFor: [
-      'Uso diario: transporte, trabajo, ejercicio',
-      'Quiere sonido PULSO sin pagar el modelo insignia',
-      'No necesita traducción en tiempo real',
-    ],
-    waMessage: 'Hola PULSO, me interesan los PulsoPods Pro 2. ¿Me cuentan más?',
-  },
-  {
     slug: 'serie-4',
     badge: 'El más vendido',
     name: 'Serie 4',
@@ -108,6 +81,33 @@ export const products: Product[] = [
       'Regalo o segundo par para la casa/oficina',
     ],
     waMessage: 'Hola PULSO, me interesan los PulsoPods Serie 4. ¿Me cuentan más?',
+  },
+  {
+    slug: 'pro-2',
+    badge: 'Clásico',
+    name: 'Pro 2',
+    tagline: 'El equilibrio entre sonido curado y precio justo.',
+    originalPrice: 105000,
+    price: 80000,
+    warrantyText: '1 mes de garantía',
+    description:
+      'El punto medio de la colección: mismo sonido curado PULSO, diseño ergonómico probado, sin la traducción en tiempo real del Pro 3.',
+    specs: [
+      { icon: 'audio', text: 'Sonido curado PULSO' },
+      { icon: 'ajuste', text: 'Diseño ergonómico probado' },
+      { icon: 'almohadillas', text: '3 pares de puntas incluidas' },
+    ],
+    benefits: [
+      'Ajuste seguro que no se cae con el movimiento',
+      'Sonido parejo para música y llamadas todo el día',
+      'Mejor relación sonido/precio de la colección',
+    ],
+    idealFor: [
+      'Uso diario: transporte, trabajo, ejercicio',
+      'Quiere sonido PULSO sin pagar el modelo insignia',
+      'No necesita traducción en tiempo real',
+    ],
+    waMessage: 'Hola PULSO, me interesan los PulsoPods Pro 2. ¿Me cuentan más?',
   },
 ];
 
