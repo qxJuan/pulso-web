@@ -202,10 +202,10 @@ details[open] summary .plus-icon {
 
 .catalog-card-visual {
   position: absolute;
-  top: 0.75rem;
+  top: 3rem;
   right: -0.5rem;
-  width: 44%;
-  height: 30%;
+  width: 48%;
+  height: 32%;
   z-index: 5;
   pointer-events: none;
 }
