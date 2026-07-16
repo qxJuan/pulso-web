@@ -1,0 +1,51 @@
+---
+const words = [
+  'Mejores precios',
+  'Sonido curado',
+  'Traducción en tiempo real',
+  'Servicio 24/7',
+  'Envío a toda Colombia',
+  'PulsoPods',
+];
+---
+
+<div class="marquee overflow-hidden bg-carbono py-6 md:py-8" data-marquee>
+  <div class="marquee-offset" data-marquee-offset>
+    <div class="marquee-track" data-marquee-track>
+      {[...Array(2)].map(() => (
+        <div class="flex items-center shrink-0">
+          {words.map((word) => (
+            <span class="flex items-center shrink-0">
+              <span class="font-display font-medium text-3xl md:text-5xl text-crema whitespace-nowrap px-6 md:px-8">
+                {word}
+              </span>
+              <span class="arc-dots text-crema/40 text-lg md:text-xl">
+                <span></span><span></span><span></span>
+              </span>
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const marquee = document.querySelector<HTMLElement>('[data-marquee]');
+  const offsetEl = document.querySelector<HTMLElement>('[data-marquee-offset]');
+  if (marquee && offsetEl) {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = marquee.getBoundingClientRect();
+        const offset = (window.innerHeight - rect.top) * 0.06;
+        offsetEl.style.transform = `translateX(-${Math.max(0, offset)}px)`;
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>

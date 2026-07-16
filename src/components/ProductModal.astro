@@ -1,0 +1,113 @@
+---
+const variants = ['case-open', 'case-closed', 'earbud', 'wearing'] as const;
+const variantLabel: Record<(typeof variants)[number], string> = {
+  'case-open': 'Estuche abierto',
+  'case-closed': 'Estuche cerrado',
+  earbud: 'Audífono',
+  wearing: 'Puesto',
+};
+const tabs = [
+  { key: 'specs', label: 'Especificaciones' },
+  { key: 'benefits', label: 'Lo que ganas' },
+  { key: 'idealFor', label: 'Ideal para' },
+] as const;
+---
+
+<div class="product-modal" data-product-modal aria-hidden="true">
+  <div class="product-modal-backdrop" data-modal-close></div>
+
+  <div class="product-modal-panel" role="dialog" aria-modal="true">
+    <div class="sticky top-0 z-10 flex items-center justify-between p-5 md:p-6 bg-[#171716]/90 backdrop-blur-sm">
+      <img src="/brand/logo-letras-claras.png" alt="PULSO" class="h-5 w-auto opacity-90" />
+      <button type="button" data-modal-close aria-label="Cerrar" class="w-9 h-9 flex items-center justify-center border border-hairline-inv text-crema hover:bg-crema hover:text-carbono transition-colors rounded-full">
+        ✕
+      </button>
+    </div>
+
+    <div class="px-6 pb-12 md:px-10 md:pb-14">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <span class="font-mono text-eyebrow uppercase tracking-[0.14em] text-crema/50">PulsoPods</span>
+          <h3 data-modal-name class="font-display font-semibold text-3xl md:text-4xl mt-1 text-crema"></h3>
+        </div>
+        <span data-modal-badge class="font-mono text-eyebrow uppercase tracking-[0.14em] bg-crema/10 text-crema/90 rounded-full px-3 py-1 hidden"></span>
+      </div>
+
+      <!-- Precio y garantía — visibles sin bajar -->
+      <div class="mt-5 flex items-center gap-3 flex-wrap">
+        <span data-modal-price class="font-display font-medium text-2xl text-crema"></span>
+        <span data-modal-original-price class="font-mono text-sm text-crema/40 line-through"></span>
+        <span data-modal-discount class="font-mono text-xs font-medium bg-emerald-900/40 text-emerald-300 rounded-full px-3 py-1"></span>
+        <span data-modal-warranty class="font-mono text-xs uppercase tracking-[0.14em] text-crema/60 border border-hairline-inv px-3 py-1"></span>
+      </div>
+
+      <!-- Imagen principal — sin fondo, flotando -->
+      <div class="mt-6 mx-auto w-full max-w-[320px] aspect-square">
+        {variants.map((variant, i) => (
+          <img
+            class="modal-main-visual w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+            class:list={[{ 'is-active': i === 0 }]}
+            data-main-visual
+            data-variant={variant}
+            alt=""
+          />
+        ))}
+      </div>
+
+      <!-- Galería de miniaturas -->
+      <div class="flex gap-3 justify-center mt-5">
+        {variants.map((variant, i) => (
+          <button
+            type="button"
+            class="gallery-thumb w-16 h-16 flex items-center justify-center p-1.5"
+            class:list={[{ 'is-active': i === 0 }]}
+            data-thumb
+            data-variant={variant}
+            aria-label={`Ver ${variantLabel[variant]}`}
+          >
+            <img data-thumb-img class="w-full h-full object-contain" alt="" />
+          </button>
+        ))}
+      </div>
+
+      <p data-modal-description class="mt-8 text-crema/70 leading-relaxed"></p>
+
+      <!-- Tabs: specs / benefits / idealFor -->
+      <div class="mt-8">
+        <div class="flex gap-2 flex-wrap" data-modal-tab-buttons>
+          {tabs.map((tab, i) => (
+            <button
+              type="button"
+              data-tab-button={tab.key}
+              class:list={['font-mono text-xs uppercase tracking-[0.14em] px-4 py-2 border border-hairline-inv transition-colors', { 'bg-crema text-carbono': i === 0, 'text-crema/60': i !== 0 }]}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {tabs.map((tab, i) => (
+          <ul data-tab-panel={tab.key} class="mt-5 space-y-3 font-mono text-sm text-crema/80" hidden={i !== 0}></ul>
+        ))}
+      </div>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <button type="button" data-modal-add-cart class="inline-flex items-center gap-2 bg-crema text-carbono px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-white">
+          Añadir al carrito
+        </button>
+        <a data-modal-wa href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 border border-hairline-inv text-crema px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-crema hover:text-carbono">
+          Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-main-visual {
+    display: none;
+  }
+  .modal-main-visual.is-active {
+    display: block;
+  }
+</style>

@@ -1,0 +1,489 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import BrandStatement from '../components/BrandStatement.astro';
+import Catalog from '../components/Catalog.astro';
+import ProductModal from '../components/ProductModal.astro';
+import CartDrawer from '../components/CartDrawer.astro';
+import HowToBuy from '../components/HowToBuy.astro';
+import ShopScript from '../components/ShopScript.astro';
+import { WHATSAPP_NUMBER, waMessage } from '../data/config';
+
+const WA = {
+  general: waMessage('Hola PULSO, quiero información de los PulsoPods.'),
+};
+---
+
+<Layout>
+  <!-- ============================================================
+       NAV
+       ============================================================ -->
+  <header class="fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-crema/85 hairline-bottom">
+    <div class="container-pulso flex items-center justify-between h-16">
+      <a href="#top" class="flex items-center">
+        <img src="/brand/logo-letras-oscuras.png" alt="PULSO" class="h-6 md:h-7 w-auto" />
+      </a>
+      <nav class="hidden md:flex items-center gap-8 font-mono text-eyebrow uppercase text-grafito">
+        <a href="#modelos" class="hover:text-carbono transition-colors">Modelos</a>
+        <a href="#traduccion" class="hover:text-carbono transition-colors">Traducción</a>
+        <a href="#por-que" class="hover:text-carbono transition-colors">Por qué</a>
+        <a href="#preguntas" class="hover:text-carbono transition-colors">Preguntas</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          data-cart-trigger
+          aria-label="Ver carrito"
+          class="relative w-10 h-10 flex items-center justify-center border border-hairline text-carbono hover:bg-carbono hover:text-crema transition-colors"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="10" cy="21" r="1.4" fill="currentColor" />
+            <circle cx="17" cy="21" r="1.4" fill="currentColor" />
+          </svg>
+          <span data-cart-count class="cart-count" style="display: none;">0</span>
+        </button>
+        <a href={WA.general} target="_blank" rel="noopener" class="btn-primary !py-2.5 !px-4 text-xs">
+          Escríbenos
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="pt-16">
+    <Hero waHref={WA.general} />
+    <Marquee />
+    <BrandStatement />
+    <Catalog />
+
+    <!-- ============================================================
+         TRADUCCIÓN — The signature moment. Live-feeling demo.
+         ============================================================ -->
+    <section id="traduccion" class="bg-carbono text-crema hairline-top">
+      <div class="container-pulso py-20 md:py-32">
+        <div class="grid md:grid-cols-12 gap-10 md:gap-16 mb-16 md:mb-20 reveal">
+          <div class="md:col-span-4">
+            <span class="font-mono text-eyebrow uppercase tracking-[0.14em] text-crema/60">
+              Traducción en tiempo real
+            </span>
+          </div>
+          <div class="md:col-span-8">
+            <h2 class="font-display font-medium text-3xl md:text-5xl leading-tight">
+              Habla como quieras.<br />
+              <span class="text-crema/60">Que te entiendan igual.</span>
+            </h2>
+          </div>
+        </div>
+
+        <!-- Live conversation demo -->
+        <div class="max-w-3xl mx-auto reveal">
+          <div class="grid md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-6 items-center">
+            <!-- Speaker A -->
+            <div class="text-center md:text-right">
+              <span class="font-mono text-eyebrow uppercase tracking-[0.14em] text-crema/40 block mb-4">
+                Habla en español
+              </span>
+              <div class="flex items-end gap-1 h-10 justify-center md:justify-end" aria-hidden="true">
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 40%; animation-delay: 0s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 80%; animation-delay: 0.2s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 55%; animation-delay: 0.4s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 100%; animation-delay: 0.1s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 65%; animation-delay: 0.3s;"></span>
+              </div>
+              <p class="font-display font-medium text-xl md:text-2xl mt-5">
+                ¿Cuánto vale enviarlo hasta Bogotá?
+              </p>
+            </div>
+
+            <!-- Live translation pulse -->
+            <div class="flex md:flex-col items-center justify-center gap-2 order-first md:order-none">
+              <div class="arc-dots text-crema/70 text-xl">
+                <span class="animate-pulse-dot-1"></span>
+                <span class="animate-pulse-dot-2"></span>
+                <span class="animate-pulse-dot-3"></span>
+              </div>
+              <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-crema/40">Traduce</span>
+            </div>
+
+            <!-- Speaker B -->
+            <div class="text-center md:text-left">
+              <span class="font-mono text-eyebrow uppercase tracking-[0.14em] text-crema/40 block mb-4">
+                Se escucha en inglés
+              </span>
+              <div class="flex items-end gap-1 h-10 justify-center md:justify-start" aria-hidden="true">
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 65%; animation-delay: 0.35s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 100%; animation-delay: 0.05s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 55%; animation-delay: 0.25s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 80%; animation-delay: 0.15s;"></span>
+                <span class="w-1 bg-crema/50 rounded-full animate-wave" style="height: 40%; animation-delay: 0.45s;"></span>
+              </div>
+              <p class="font-display font-medium text-xl md:text-2xl mt-5">
+                How much does shipping to Bogotá cost?
+              </p>
+            </div>
+          </div>
+
+          <p class="text-center mt-12 font-mono text-xs uppercase tracking-[0.14em] text-crema/50">
+            Español · Inglés · Portugués · Francés · +40 idiomas
+          </p>
+          <p class="text-center mt-2 font-mono text-xs text-crema/30">
+            Disponible en iPhone 15 Pro o superior, con Apple Intelligence.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10 md:gap-16 mt-20 md:mt-28">
+          <div class="reveal">
+            <h3 class="font-display font-medium text-xl md:text-2xl mb-4">
+              Sin apps intermedias.
+            </h3>
+            <p class="text-crema/70 leading-relaxed">
+              La traducción vive dentro del Pro 3. Emparejas los audífonos,
+              eliges el idioma y hablas. Nadie más se entera de lo que hay
+              en tu conversación.
+            </p>
+          </div>
+          <div class="reveal">
+            <h3 class="font-display font-medium text-xl md:text-2xl mb-4">
+              Para trabajar, viajar, vivir.
+            </h3>
+            <p class="text-crema/70 leading-relaxed">
+              Reuniones con clientes en Miami, un tour en Cartagena,
+              una llamada con un proveedor en Shenzhen. El sonido no
+              debería ser una barrera.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-16 flex justify-center reveal">
+          <a
+            href="https://www.instagram.com/reel/Daip-fsPnGh/"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 bg-crema text-carbono px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-white"
+          >
+            Ver el Pro 3 en acción
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         POR QUÉ PULSO
+         ============================================================ -->
+    <section id="por-que" class="bg-crema hairline-top">
+      <div class="container-pulso py-20 md:py-32">
+        <div class="grid md:grid-cols-12 gap-10 md:gap-16 mb-16 md:mb-20 reveal">
+          <div class="md:col-span-4">
+            <span class="eyebrow">Por qué PULSO</span>
+          </div>
+          <div class="md:col-span-8">
+            <h2 class="font-display font-medium text-3xl md:text-5xl leading-tight text-carbono">
+              Somos pocos.<br />
+              <span class="text-grafito">Por eso podemos ser mejores.</span>
+            </h2>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-10 md:gap-16">
+          <div class="reveal">
+            <div class="arc-dots text-carbono text-2xl mb-6">
+              <span></span><span></span><span></span>
+            </div>
+            <h3 class="font-display font-medium text-xl md:text-2xl mb-3 text-carbono">
+              Sonido curado
+            </h3>
+            <p class="text-grafito leading-relaxed">
+              No perseguimos ficha técnica. Buscamos que se sienta:
+              el bajo con peso, el medio con cuerpo, el agudo sin filo.
+            </p>
+          </div>
+          <div class="reveal">
+            <div class="arc-dots text-carbono text-2xl mb-6">
+              <span></span><span></span><span></span>
+            </div>
+            <h3 class="font-display font-medium text-xl md:text-2xl mb-3 text-carbono">
+              Garantía asegurada
+            </h3>
+            <p class="text-grafito leading-relaxed">
+              Cada PulsoPod incluye 1 mes de garantía. Si algo falla,
+              lo resolvemos directo por WhatsApp.
+            </p>
+          </div>
+          <div class="reveal">
+            <div class="arc-dots text-carbono text-2xl mb-6">
+              <span></span><span></span><span></span>
+            </div>
+            <h3 class="font-display font-medium text-xl md:text-2xl mb-3 text-carbono">
+              Atención directa
+            </h3>
+            <p class="text-grafito leading-relaxed">
+              Detrás de PULSO hay un equipo real respondiendo cada
+              mensaje, antes y después de tu compra.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONFIANZA — Social proof
+         ============================================================ -->
+    <section class="hairline-top bg-crema-soft">
+      <div class="container-pulso py-20 md:py-28">
+        <div class="grid md:grid-cols-12 gap-10 md:gap-16 mb-16 reveal">
+          <div class="md:col-span-4">
+            <span class="eyebrow">Confianza</span>
+          </div>
+          <div class="md:col-span-8">
+            <h2 class="font-display font-medium text-3xl md:text-5xl leading-tight text-carbono">
+              Lo que dicen los que ya escuchan con PULSO.
+            </h2>
+          </div>
+        </div>
+
+        <!--
+          NOTA JUAN: reemplaza estas cards con capturas reales de WhatsApp
+          o de TikTok. Sube las imágenes a /public/testimonios/ y cambia
+          el <blockquote> por <img src="/testimonios/xxx.png" />.
+        -->
+        <div class="grid md:grid-cols-3 gap-6">
+          <blockquote class="bg-crema p-8 flex flex-col justify-between min-h-[200px] reveal">
+            <p class="font-display text-lg leading-snug text-carbono">
+              "Los estrené en el vuelo a Medellín. La cancelación es una locura,
+              no oí ni al bebé de al lado."
+            </p>
+            <footer class="mt-6 font-mono text-xs uppercase tracking-[0.14em] text-grafito">
+              — María C. · Cartagena
+            </footer>
+          </blockquote>
+          <blockquote class="bg-crema p-8 flex flex-col justify-between min-h-[200px] reveal">
+            <p class="font-display text-lg leading-snug text-carbono">
+              "Usé la traducción en una reunión con un cliente de Brasil.
+              Cambió cómo trabajo. En serio."
+            </p>
+            <footer class="mt-6 font-mono text-xs uppercase tracking-[0.14em] text-grafito">
+              — Andrés M. · Barranquilla
+            </footer>
+          </blockquote>
+          <blockquote class="bg-crema p-8 flex flex-col justify-between min-h-[200px] reveal">
+            <p class="font-display text-lg leading-snug text-carbono">
+              "Los pedí un miércoles, llegaron el jueves. Y Juan me escribió
+              para preguntar si todo bien. No me pasa con Amazon."
+            </p>
+            <footer class="mt-6 font-mono text-xs uppercase tracking-[0.14em] text-grafito">
+              — Laura P. · Bogotá
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <HowToBuy />
+
+    <!-- ============================================================
+         FAQ — Handles the "replica AAA" objection educationally
+         ============================================================ -->
+    <section id="preguntas" class="hairline-top bg-crema">
+      <div class="container-pulso py-20 md:py-32">
+        <div class="grid md:grid-cols-12 gap-10 md:gap-16 mb-16 md:mb-20 reveal">
+          <div class="md:col-span-4">
+            <span class="eyebrow">Preguntas frecuentes</span>
+          </div>
+          <div class="md:col-span-8">
+            <h2 class="font-display font-medium text-3xl md:text-5xl leading-tight text-carbono">
+              Lo que más nos preguntan por WhatsApp.
+            </h2>
+          </div>
+        </div>
+
+        <div class="max-w-3xl mx-auto divide-y divide-hairline">
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6">
+              <span class="font-display font-medium text-lg md:text-xl text-carbono">
+                ¿Son los mismos "AAA" que se ven en TikTok?
+              </span>
+              <span class="plus-icon font-mono text-xl text-grafito flex-shrink-0 mt-1">+</span>
+            </summary>
+            <div class="pt-4 text-grafito leading-relaxed">
+              No. Los "AAA" son réplicas fabricadas para parecerse por fuera —
+              con componentes reciclados, baterías inestables y sin soporte real
+              cuando fallan. Los PulsoPods vienen de una línea propia,
+              con controles de calidad por lote, garantía formal y atención
+              directa con nosotros. La diferencia se nota en el primer día,
+              pero sobre todo en el sexto mes. ¿Quieres que te enviemos
+              una comparación por WhatsApp?
+            </div>
+          </details>
+
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6">
+              <span class="font-display font-medium text-lg md:text-xl text-carbono">
+                ¿Cómo funciona la traducción en tiempo real del Pro 3?
+              </span>
+              <span class="plus-icon font-mono text-xl text-grafito flex-shrink-0 mt-1">+</span>
+            </summary>
+            <div class="pt-4 text-grafito leading-relaxed">
+              Emparejas los audífonos, eliges el idioma en la app y hablas.
+              El Pro 3 procesa tu voz y devuelve la traducción al oído
+              (tuyo o del otro, según el modo). No hay latencia notable
+              en llamadas ni en conversaciones cara a cara.
+            </div>
+          </details>
+
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6">
+              <span class="font-display font-medium text-lg md:text-xl text-carbono">
+                ¿Envían a toda Colombia? ¿Y afuera?
+              </span>
+              <span class="plus-icon font-mono text-xl text-grafito flex-shrink-0 mt-1">+</span>
+            </summary>
+            <div class="pt-4 text-grafito leading-relaxed">
+              Sí, enviamos a todo Colombia (24–72h según ciudad) y
+              coordinamos envíos internacionales cuando aplica.
+              Te confirmamos por WhatsApp costos y tiempos según tu dirección.
+            </div>
+          </details>
+
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6">
+              <span class="font-display font-medium text-lg md:text-xl text-carbono">
+                ¿Qué pasa si algo falla?
+              </span>
+              <span class="plus-icon font-mono text-xl text-grafito flex-shrink-0 mt-1">+</span>
+            </summary>
+            <div class="pt-4 text-grafito leading-relaxed">
+              Nos escribes por WhatsApp y lo resolvemos.
+              La garantía cubre defectos de fábrica; nunca vas a tener
+              que pelear con un formulario ni esperar días por una respuesta.
+            </div>
+          </details>
+
+          <details class="group py-6">
+            <summary class="flex items-start justify-between gap-6">
+              <span class="font-display font-medium text-lg md:text-xl text-carbono">
+                ¿Cuál me recomiendan a mí?
+              </span>
+              <span class="plus-icon font-mono text-xl text-grafito flex-shrink-0 mt-1">+</span>
+            </summary>
+            <div class="pt-4 text-grafito leading-relaxed">
+              Depende de cómo los vas a usar. Escríbenos por WhatsApp
+              con tres datos — para qué los quieres (trabajo, música,
+              viajes), qué presupuesto manejas, y si vas a necesitar
+              traducción — y te decimos cuál te sirve más. Sin insistir.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FINAL CTA — Wordmark echo, single decisive action
+         ============================================================ -->
+    <section class="bg-carbono text-crema hairline-top">
+      <div class="container-pulso py-24 md:py-40 text-center">
+        <span class="font-mono text-eyebrow uppercase tracking-[0.14em] text-crema/60 reveal">
+          Cuando estés listo
+        </span>
+
+        <h2 class="wordmark-hero mt-8 mb-10 select-none reveal" style="font-size: clamp(4rem, 15vw, 14rem);">
+          pulso
+        </h2>
+
+        <div class="flex justify-center mb-12 reveal">
+          <div class="arc-dots text-crema text-3xl">
+            <span class="animate-pulse-dot-1"></span>
+            <span class="animate-pulse-dot-2"></span>
+            <span class="animate-pulse-dot-3"></span>
+          </div>
+        </div>
+
+        <p class="font-display font-light text-xl md:text-3xl max-w-2xl mx-auto mb-12 reveal">
+          Escríbenos. Respondemos con nombre propio,
+          nunca con guion enlatado.
+        </p>
+
+        <div class="reveal">
+          <a
+            href={WA.general}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-3 bg-crema text-carbono px-8 py-4 font-body font-medium tracking-wide transition-all duration-300 hover:bg-white"
+          >
+            Abrir WhatsApp
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <p class="mt-10 font-mono text-xs uppercase tracking-[0.14em] text-crema/50 reveal">
+          Lunes a sábado · 9am — 7pm (COL)
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="bg-carbono text-crema/60 hairline-top border-hairline-inv">
+      <div class="container-pulso py-12 md:py-16">
+        <div class="grid md:grid-cols-3 gap-10 md:gap-16">
+          <div>
+            <div class="flex items-center mb-3">
+              <img src="/brand/logo-letras-claras.png" alt="PULSO" class="h-6 w-auto" />
+            </div>
+            <p class="font-mono text-xs uppercase tracking-[0.14em]">
+              Sonido que se siente.
+            </p>
+          </div>
+
+          <div>
+            <span class="font-mono text-xs uppercase tracking-[0.14em] text-crema mb-4 block">
+              Contacto
+            </span>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a href={WA.general} target="_blank" rel="noopener" class="hover:text-crema transition-colors">
+                  WhatsApp Business
+                </a>
+              </li>
+              <li>Cartagena, Bolívar — Colombia</li>
+            </ul>
+          </div>
+
+          <div>
+            <span class="font-mono text-xs uppercase tracking-[0.14em] text-crema mb-4 block">
+              Síguenos
+            </span>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a href="https://instagram.com/pulso.ctg" target="_blank" rel="noopener" class="hover:text-crema transition-colors">
+                  Instagram · @pulso.ctg
+                </a>
+              </li>
+              <li>
+                <a href="https://tiktok.com/@pulso.storee" target="_blank" rel="noopener" class="hover:text-crema transition-colors">
+                  TikTok · @pulso.storee
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/Pulsoctg/reels/" target="_blank" rel="noopener" class="hover:text-crema transition-colors">
+                  Facebook · Pulsoctg
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-12 pt-6 border-t border-hairline-inv flex flex-col md:flex-row justify-between gap-2 font-mono text-xs uppercase tracking-[0.14em]">
+          <span>© 2026 PULSO · Todos los derechos reservados</span>
+          <span>Diseño propio · Hecho en Cartagena</span>
+        </div>
+      </div>
+    </footer>
+
+    <ProductModal />
+    <CartDrawer />
+    <ShopScript whatsappNumber={WHATSAPP_NUMBER} />
+  </main>
+</Layout>

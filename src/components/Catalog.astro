@@ -1,0 +1,88 @@
+---
+import { products, formatPrice, discountPercent, productImageCutout } from '../data/products';
+---
+
+<section id="modelos" class="hairline-top bg-carbono text-crema">
+  <div class="container-pulso py-20 md:py-32">
+    <div class="grid md:grid-cols-12 gap-10 md:gap-16 mb-16 md:mb-20 reveal">
+      <div class="md:col-span-4">
+        <span class="font-mono text-eyebrow uppercase tracking-[0.14em] text-crema/60">Modelos</span>
+      </div>
+      <div class="md:col-span-8">
+        <h2 class="font-display font-medium text-3xl md:text-5xl leading-tight">
+          Tres formas de escuchar.<br />
+          <span class="text-crema/60">Desliza para verlas.</span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="catalog-track reveal" data-catalog>
+      {products.map((product) => {
+        const discount = discountPercent(product);
+        return (
+          <article class="catalog-card bg-carbono-soft flex flex-col relative overflow-hidden border border-hairline-inv">
+            <div class="absolute top-5 left-5 z-10 flex items-center gap-2">
+              {discount && (
+                <span class="font-mono text-xs font-medium bg-emerald-900/40 text-emerald-300 rounded-full px-3 py-1">
+                  -{discount}%
+                </span>
+              )}
+              {product.badge && (
+                <span class="font-mono text-eyebrow uppercase bg-crema/10 backdrop-blur-sm text-crema/90 rounded-full px-3 py-1">
+                  {product.badge}
+                </span>
+              )}
+            </div>
+
+            <div class="catalog-card-visual" aria-hidden="true">
+              <img
+                src={productImageCutout(product.slug, 'case-open')}
+                alt=""
+                class="w-full h-full object-contain object-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
+                loading="lazy"
+              />
+            </div>
+
+            <div class="p-8 md:p-10 flex flex-col flex-1 relative">
+              <div class="max-w-[52%]">
+                <span class="font-mono text-eyebrow uppercase tracking-[0.14em] text-crema/50">PulsoPods</span>
+                <h3 class="font-display font-semibold text-3xl md:text-4xl mt-2">{product.name}</h3>
+              </div>
+
+              <p class="text-crema/70 leading-relaxed mt-24 md:mt-20">{product.tagline}</p>
+
+              <div class="mt-auto pt-8">
+                <div class="pt-6 border-t border-hairline-inv">
+                  <div class="flex items-baseline gap-3 mb-1">
+                    <span class="font-display font-medium text-2xl">{formatPrice(product.price)}</span>
+                    {product.originalPrice && (
+                      <span class="font-mono text-sm text-crema/40 line-through">{formatPrice(product.originalPrice)}</span>
+                    )}
+                  </div>
+                  <span class="font-mono text-xs uppercase tracking-[0.14em] text-crema/50">
+                    {product.warrantyText}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  data-open-product={product.slug}
+                  class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-crema text-carbono px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-white"
+                >
+                  Ver más
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <p class="mt-10 font-mono text-xs uppercase tracking-[0.14em] text-crema/50 reveal">
+      Precios de julio · Envío y disponibilidad confirmados por WhatsApp
+    </p>
+  </div>
+</section>
+
+<script type="application/json" id="products-data" set:html={JSON.stringify(products)} />

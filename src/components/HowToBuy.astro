@@ -1,0 +1,51 @@
+---
+const steps = [
+  {
+    n: '01',
+    title: 'Elige tu modelo',
+    text: 'Compara los tres PulsoPods y agrega el que quieras al carrito.',
+  },
+  {
+    n: '02',
+    title: 'Revisa tu selección',
+    text: 'Abre el carrito, confirma qué llevas y dale "Solicitar pedido".',
+  },
+  {
+    n: '03',
+    title: 'Te confirmamos por chat',
+    text: 'Precio final, envío y disponibilidad — directo con nosotros, sin intermediarios.',
+  },
+  {
+    n: '04',
+    title: 'Pagas y coordinamos el envío',
+    text: 'A todo Colombia (24–72h según ciudad). Te avisamos cuando salga.',
+  },
+];
+---
+
+<section class="hairline-top bg-crema">
+  <div class="container-pulso py-20 md:py-32">
+    <div class="grid md:grid-cols-12 gap-10 md:gap-16 mb-16 md:mb-20 reveal">
+      <div class="md:col-span-4">
+        <span class="eyebrow">¿Cómo adquirir?</span>
+      </div>
+      <div class="md:col-span-8">
+        <h2 class="font-display font-medium text-3xl md:text-5xl leading-tight text-carbono">
+          Cuatro pasos y listo.
+        </h2>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-10 md:gap-8">
+      {steps.map((step) => (
+        <div class="reveal">
+          <span class="font-display font-medium text-4xl text-hairline block mb-4" style="color: rgba(13,13,13,0.18);">
+            {step.n}
+          </span>
+          <h3 class="font-display font-medium text-lg mb-2 text-carbono">{step.title}</h3>
+          <p class="text-grafito leading-relaxed text-sm">{step.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

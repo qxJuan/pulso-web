@@ -1,0 +1,51 @@
+---
+interface Props {
+  waHref: string;
+}
+const { waHref } = Astro.props;
+---
+
+<!--
+  EDITA ESTO: el copy de abajo (badge / headline / subtext) es una primera
+  propuesta — cámbialo por lo que quieras probar. Están marcados para que
+  sea fácil encontrarlos.
+-->
+<section class="relative min-h-[calc(100dvh-4rem)] flex flex-col justify-between overflow-hidden bg-carbono text-crema">
+  <div class="absolute inset-0 isologo-pattern pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container-pulso relative flex-1 flex flex-col justify-center py-16 md:py-20">
+    <!-- BADGE -->
+    <span class="inline-flex w-fit items-center gap-2 rounded-full border border-hairline-inv px-4 py-1.5 font-mono text-eyebrow uppercase text-crema/80 mb-8 md:mb-10 reveal">
+      La mejor calidad del mercado · Servicio 24/7
+    </span>
+
+    <!-- HEADLINE -->
+    <h1 class="font-display font-medium text-4xl md:text-6xl lg:text-7xl leading-[1.05] max-w-3xl reveal">
+      Sonido que se siente,<br />
+      <span class="text-crema/60">al mejor precio.</span>
+    </h1>
+
+    <!-- SUBTEXT -->
+    <p class="mt-6 md:mt-8 max-w-lg text-crema/70 leading-relaxed text-lg reveal">
+      PulsoPods, con garantía asegurada y envíos a toda Colombia.
+      Descuentos activos todo julio.
+    </p>
+
+    <div class="flex flex-wrap gap-3 mt-10 reveal">
+      <a href="#modelos" class="inline-flex items-center gap-2 bg-crema text-carbono px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-white">
+        Ver colección
+        <span aria-hidden="true">→</span>
+      </a>
+      <a href={waHref} target="_blank" rel="noopener" class="inline-flex items-center gap-2 border border-hairline-inv text-crema px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-carbono-soft">
+        Habla con nosotros
+      </a>
+    </div>
+  </div>
+
+  <div class="container-pulso relative pb-8 md:pb-10 flex justify-center">
+    <a href="#modelos" class="scroll-cue text-crema/50 hover:text-crema/80 transition-colors">
+      <span class="font-mono text-eyebrow uppercase tracking-[0.14em]">Scroll</span>
+      <span aria-hidden="true">↓</span>
+    </a>
+  </div>
+</section>

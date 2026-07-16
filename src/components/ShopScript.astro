@@ -1,0 +1,301 @@
+---
+interface Props {
+  whatsappNumber: string;
+}
+const { whatsappNumber } = Astro.props;
+---
+
+<script define:vars={{ WHATSAPP_NUMBER: whatsappNumber }}>
+  const productsDataEl = document.getElementById('products-data');
+  const products = productsDataEl ? JSON.parse(productsDataEl.textContent || '[]') : [];
+
+  function formatPrice(price) {
+    return `$${price.toLocaleString('es-CO')}`;
+  }
+
+  function discountPercent(product) {
+    if (!product.originalPrice) return null;
+    return Math.round((1 - product.price / product.originalPrice) * 100);
+  }
+
+  function productImage(slug, variant) {
+    return `/images/products/${slug}-${variant}.png`;
+  }
+
+  function productImageCutout(slug, variant) {
+    if (variant === 'wearing') return productImage(slug, variant);
+    return `/images/products/${slug}-${variant}-cutout.png`;
+  }
+
+  // ---- Cart state (localStorage) ----
+  const CART_KEY = 'pulso-cart';
+
+  function readCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+    } catch {
+      return [];
+    }
+  }
+
+  function writeCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    renderCart();
+    updateCartCount();
+  }
+
+  function addToCart(slug) {
+    const cart = readCart();
+    const existing = cart.find((i) => i.slug === slug);
+    if (existing) existing.qty += 1;
+    else cart.push({ slug, qty: 1 });
+    writeCart(cart);
+  }
+
+  function removeFromCart(slug) {
+    writeCart(readCart().filter((i) => i.slug !== slug));
+  }
+
+  function setQty(slug, qty) {
+    const cart = readCart();
+    const item = cart.find((i) => i.slug === slug);
+    if (!item) return;
+    if (qty <= 0) {
+      writeCart(cart.filter((i) => i.slug !== slug));
+    } else {
+      item.qty = qty;
+      writeCart(cart);
+    }
+  }
+
+  function updateCartCount() {
+    const count = readCart().reduce((sum, i) => sum + i.qty, 0);
+    document.querySelectorAll('[data-cart-count]').forEach((el) => {
+      el.textContent = String(count);
+      el.style.display = count > 0 ? 'flex' : 'none';
+    });
+    document.querySelectorAll('[data-cart-panel-count]').forEach((el) => {
+      el.textContent = count === 1 ? '1 item' : `${count} items`;
+    });
+  }
+
+  function renderCart() {
+    const cart = readCart();
+    const itemsEl = document.querySelector('[data-cart-items]');
+    const emptyEl = document.querySelector('[data-cart-empty]');
+    const checkoutBtn = document.querySelector('[data-cart-checkout]');
+    const totalLabel = document.querySelector('[data-cart-total-label]');
+    if (!itemsEl || !emptyEl || !checkoutBtn || !totalLabel) return;
+
+    itemsEl.innerHTML = '';
+
+    const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+    totalLabel.textContent = totalQty === 1 ? '1 producto' : `${totalQty} productos`;
+    checkoutBtn.disabled = cart.length === 0;
+    checkoutBtn.classList.toggle('opacity-40', cart.length === 0);
+    checkoutBtn.classList.toggle('pointer-events-none', cart.length === 0);
+
+    if (cart.length === 0) {
+      emptyEl.style.display = 'block';
+      itemsEl.style.display = 'none';
+      return;
+    }
+
+    emptyEl.style.display = 'none';
+    itemsEl.style.display = 'block';
+
+    cart.forEach((item) => {
+      const product = products.find((p) => p.slug === item.slug);
+      if (!product) return;
+      const row = document.createElement('div');
+      row.className = 'flex items-start justify-between gap-4 py-4 border-b border-hairline-inv last:border-0';
+      row.innerHTML = `
+        <div>
+          <p class="font-display font-medium text-crema">${product.name}</p>
+          <p class="font-mono text-xs uppercase tracking-[0.14em] text-crema/50 mt-1">${formatPrice(product.price)}</p>
+          <div class="flex items-center gap-3 mt-3">
+            <button type="button" data-qty-decrease class="w-7 h-7 border border-hairline-inv flex items-center justify-center text-crema">−</button>
+            <span class="font-mono text-sm text-crema">${item.qty}</span>
+            <button type="button" data-qty-increase class="w-7 h-7 border border-hairline-inv flex items-center justify-center text-crema">+</button>
+          </div>
+        </div>
+        <button type="button" data-remove-item class="font-mono text-xs uppercase tracking-[0.14em] text-crema/50 hover:text-crema">Quitar</button>
+      `;
+      row.querySelector('[data-qty-decrease]')?.addEventListener('click', () => setQty(item.slug, item.qty - 1));
+      row.querySelector('[data-qty-increase]')?.addEventListener('click', () => setQty(item.slug, item.qty + 1));
+      row.querySelector('[data-remove-item]')?.addEventListener('click', () => removeFromCart(item.slug));
+      itemsEl.appendChild(row);
+    });
+  }
+
+  // ---- Cart panel open/close ----
+  const cartDrawer = document.querySelector('[data-cart-drawer]');
+
+  function openCart() {
+    cartDrawer?.classList.add('is-open');
+    cartDrawer?.setAttribute('aria-hidden', 'false');
+  }
+  function closeCart() {
+    cartDrawer?.classList.remove('is-open');
+    cartDrawer?.setAttribute('aria-hidden', 'true');
+  }
+
+  document.querySelectorAll('[data-cart-trigger]').forEach((btn) => btn.addEventListener('click', openCart));
+  document.querySelectorAll('[data-cart-close]').forEach((btn) => btn.addEventListener('click', closeCart));
+  document.querySelector('[data-cart-clear]')?.addEventListener('click', () => writeCart([]));
+
+  document.querySelector('[data-cart-checkout]')?.addEventListener('click', () => {
+    const cart = readCart();
+    if (cart.length === 0) return;
+    const lines = cart
+      .map((item) => {
+        const product = products.find((p) => p.slug === item.slug);
+        return product ? `- PulsoPods ${product.name} x${item.qty}` : '';
+      })
+      .filter(Boolean);
+    const message = `Hola PULSO, quiero comprar:\n${lines.join('\n')}\n¿Me confirman precio total, disponibilidad y envío?`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener');
+  });
+
+  // ---- Product modal ----
+  const modal = document.querySelector('[data-product-modal]');
+
+  function openProductModal(slug) {
+    const product = products.find((p) => p.slug === slug);
+    if (!product || !modal) return;
+
+    modal.querySelector('[data-modal-name]').textContent = product.name;
+
+    const badgeEl = modal.querySelector('[data-modal-badge]');
+    if (product.badge) {
+      badgeEl.textContent = product.badge;
+      badgeEl.classList.remove('hidden');
+    } else {
+      badgeEl.classList.add('hidden');
+    }
+
+    modal.querySelector('[data-modal-price]').textContent = formatPrice(product.price);
+    modal.querySelector('[data-modal-warranty]').textContent = product.warrantyText;
+    modal.querySelector('[data-modal-description]').textContent = product.description;
+
+    const discount = discountPercent(product);
+    const originalPriceEl = modal.querySelector('[data-modal-original-price]');
+    const discountEl = modal.querySelector('[data-modal-discount]');
+    if (discount) {
+      originalPriceEl.textContent = formatPrice(product.originalPrice);
+      originalPriceEl.classList.remove('hidden');
+      discountEl.textContent = `-${discount}%`;
+      discountEl.classList.remove('hidden');
+    } else {
+      originalPriceEl.classList.add('hidden');
+      discountEl.classList.add('hidden');
+    }
+
+    const waLink = modal.querySelector('[data-modal-wa]');
+    waLink.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(product.waMessage)}`;
+
+    const specsPanel = modal.querySelector('[data-tab-panel="specs"]');
+    if (specsPanel) {
+      specsPanel.innerHTML = product.specs
+        .map(
+          (spec) =>
+            `<li class="flex items-center gap-3"><img src="/icons/${spec.icon}.svg" alt="" class="w-5 h-5 shrink-0" /><span>${spec.text}</span></li>`
+        )
+        .join('');
+    }
+    ['benefits', 'idealFor'].forEach((key) => {
+      const panel = modal.querySelector(`[data-tab-panel="${key}"]`);
+      if (!panel) return;
+      panel.innerHTML = product[key]
+        .map((item) => `<li class="flex gap-3"><span class="text-crema/40">→</span><span>${item}</span></li>`)
+        .join('');
+    });
+
+    // Set real product photos for main visual + thumbnails (sin fondo)
+    modal.querySelectorAll('[data-main-visual]').forEach((img) => {
+      img.src = productImageCutout(product.slug, img.getAttribute('data-variant'));
+      img.alt = `PulsoPods ${product.name}`;
+    });
+    modal.querySelectorAll('[data-thumb]').forEach((thumb) => {
+      const variant = thumb.getAttribute('data-variant');
+      const thumbImg = thumb.querySelector('[data-thumb-img]');
+      if (thumbImg) thumbImg.src = productImageCutout(product.slug, variant);
+    });
+
+    // Reset to first tab + first visual
+    modal.querySelectorAll('[data-tab-button]').forEach((btn, i) => {
+      btn.classList.toggle('bg-crema', i === 0);
+      btn.classList.toggle('text-carbono', i === 0);
+      btn.classList.toggle('text-crema/60', i !== 0);
+    });
+    modal.querySelectorAll('[data-tab-panel]').forEach((panel, i) => {
+      panel.hidden = i !== 0;
+    });
+    modal.querySelectorAll('[data-main-visual]').forEach((el, i) => el.classList.toggle('is-active', i === 0));
+    modal.querySelectorAll('[data-thumb]').forEach((el, i) => el.classList.toggle('is-active', i === 0));
+
+    const addCartBtn = modal.querySelector('[data-modal-add-cart]');
+    addCartBtn.onclick = () => {
+      addToCart(product.slug);
+      addCartBtn.textContent = 'Agregado ✓';
+      setTimeout(() => {
+        addCartBtn.textContent = 'Añadir al carrito';
+      }, 1400);
+    };
+
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeProductModal() {
+    modal?.classList.remove('is-open');
+    modal?.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+
+  document.querySelectorAll('[data-open-product]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const slug = btn.getAttribute('data-open-product');
+      if (slug) openProductModal(slug);
+    });
+  });
+  modal?.querySelectorAll('[data-modal-close]').forEach((btn) => btn.addEventListener('click', closeProductModal));
+
+  modal?.querySelectorAll('[data-thumb]').forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const variant = thumb.getAttribute('data-variant');
+      modal.querySelectorAll('[data-thumb]').forEach((t) => t.classList.toggle('is-active', t === thumb));
+      modal
+        .querySelectorAll('[data-main-visual]')
+        .forEach((v) => v.classList.toggle('is-active', v.getAttribute('data-variant') === variant));
+    });
+  });
+
+  modal?.querySelectorAll('[data-tab-button]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-tab-button');
+      modal.querySelectorAll('[data-tab-button]').forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('bg-crema', active);
+        b.classList.toggle('text-carbono', active);
+        b.classList.toggle('text-crema/60', !active);
+      });
+      modal.querySelectorAll('[data-tab-panel]').forEach((panel) => {
+        panel.hidden = panel.getAttribute('data-tab-panel') !== key;
+      });
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeProductModal();
+      closeCart();
+    }
+  });
+
+  // Init
+  updateCartCount();
+  renderCart();
+</script>

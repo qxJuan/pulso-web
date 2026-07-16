@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-crema text-carbono font-body;
+    font-feature-settings: 'ss01' on, 'cv11' on;
+  }
+
+  ::selection {
+    @apply bg-carbono text-crema;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply font-mono text-eyebrow uppercase tracking-[0.14em] text-grafito;
+  }
+
+  .container-pulso {
+    @apply mx-auto w-full max-w-[1240px] px-6 md:px-10;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-carbono text-crema px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-grafito;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border border-carbono text-carbono px-6 py-3.5 font-body font-medium text-sm tracking-wide transition-all duration-300 hover:bg-carbono hover:text-crema;
+  }
+
+  .hairline-top {
+    @apply border-t border-hairline;
+  }
+
+  .hairline-bottom {
+    @apply border-b border-hairline;
+  }
+}
+
+/* Wordmark hero — sized responsively */
+.wordmark-hero {
+  font-family: 'Sora', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  font-size: clamp(5.5rem, 22vw, 20rem);
+}
+
+.wordmark-nav {
+  font-family: 'Sora', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: 1.5rem;
+}
+
+/* Isotipo 3-dot arc */
+.arc-dots {
+  display: inline-flex;
+  gap: 0.28em;
+  align-items: flex-end;
+}
+
+.arc-dots span {
+  display: block;
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.arc-dots span:nth-child(1) { transform: translateY(0.15em); }
+.arc-dots span:nth-child(2) { transform: translateY(-0.1em); }
+.arc-dots span:nth-child(3) { transform: translateY(0.15em); }
+
+/* Scroll-triggered reveal (progressive enhancement) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* FAQ */
+details summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary .plus-icon {
+  transition: transform 0.3s ease;
+}
+
+details[open] summary .plus-icon {
+  transform: rotate(45deg);
+}
+
+/* ============================================================
+   HERO — sparse isologo dot pattern, low opacity
+   ============================================================ */
+.isologo-pattern {
+  background-image:
+    radial-gradient(circle, rgba(245, 240, 232, 0.55) 1.6px, transparent 1.7px),
+    radial-gradient(circle, rgba(245, 240, 232, 0.4) 1.3px, transparent 1.4px),
+    radial-gradient(circle, rgba(245, 240, 232, 0.55) 1.6px, transparent 1.7px);
+  background-size: 340px 340px, 340px 340px, 340px 340px;
+  background-position: 40px 60px, 62px 46px, 84px 60px;
+  background-repeat: repeat;
+  opacity: 0.5;
+}
+
+.scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: scrollCueBob 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollCueBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ============================================================
+   MARQUEE — auto-scrolling keyword ribbon, scroll-linked offset
+   ============================================================ */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 28s linear infinite;
+  will-change: transform;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   CATALOG — horizontal snap carousel
+   ============================================================ */
+.catalog-track {
+  display: flex;
+  gap: 1px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.catalog-track::-webkit-scrollbar {
+  display: none;
+}
+
+.catalog-card {
+  scroll-snap-align: start;
+  flex: 0 0 min(88vw, 380px);
+  min-height: 480px;
+}
+
+@media (min-width: 768px) {
+  .catalog-card {
+    flex: 0 0 calc((100% - 2px) / 3);
+  }
+}
+
+.catalog-card-visual {
+  position: absolute;
+  top: 0.75rem;
+  right: -0.5rem;
+  width: 54%;
+  height: 36%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ============================================================
+   PRODUCT MODAL
+   ============================================================ */
+.product-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+}
+
+.product-modal.is-open {
+  display: block;
+}
+
+.product-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 13, 13, 0.75);
+  backdrop-filter: blur(3px);
+}
+
+.product-modal-panel {
+  position: absolute;
+  inset: 5% 4%;
+  margin: auto;
+  width: auto;
+  max-width: 760px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  background: #171716;
+  color: #F5F0E8;
+  border: 1px solid rgba(245, 240, 232, 0.12);
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+@media (min-width: 768px) {
+  .product-modal-panel {
+    inset: 4% 8%;
+    max-height: 92dvh;
+  }
+}
+
+.gallery-thumb {
+  border: 1px solid rgba(245, 240, 232, 0.14);
+  border-radius: 10px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.gallery-thumb.is-active {
+  border-color: #F5F0E8;
+  background: rgba(245, 240, 232, 0.08);
+  color: #F5F0E8;
+}
+
+/* ============================================================
+   CART PANEL — floating popover anchored under the cart icon
+   ============================================================ */
+.cart-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+}
+
+.cart-panel.is-open {
+  display: block;
+}
+
+.cart-panel-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.cart-panel-card {
+  position: absolute;
+  top: 4.5rem;
+  right: max(1.25rem, calc((100vw - 1240px) / 2 + 1.25rem));
+  width: min(92vw, 400px);
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
+  background: #0D0D0D;
+  border: 1px solid rgba(245, 240, 232, 0.14);
+  border-radius: 1rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(-10px) scale(0.98);
+  transform-origin: top right;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.cart-panel.is-open .cart-panel-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #0D0D0D;
+  color: #F5F0E8;
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
