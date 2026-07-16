@@ -158,6 +158,44 @@ const { whatsappNumber } = Astro.props;
     window.open(url, '_blank', 'noopener');
   });
 
+  // ---- "Fly to cart" animation ----
+  function bumpCartIcon() {
+    document.querySelectorAll('[data-cart-trigger]').forEach((btn) => {
+      btn.classList.add('cart-bump');
+      setTimeout(() => btn.classList.remove('cart-bump'), 420);
+    });
+  }
+
+  function flyToCart(originEl) {
+    const cartBtn = document.querySelector('[data-cart-trigger]');
+    if (!originEl || !cartBtn) return;
+
+    const start = originEl.getBoundingClientRect();
+    const end = cartBtn.getBoundingClientRect();
+
+    const flyer = document.createElement('div');
+    flyer.className = 'cart-flyer';
+    flyer.textContent = '✓';
+    flyer.style.left = `${start.left + start.width / 2}px`;
+    flyer.style.top = `${start.top + start.height / 2}px`;
+    document.body.appendChild(flyer);
+
+    const dx = end.left + end.width / 2 - (start.left + start.width / 2);
+    const dy = end.top + end.height / 2 - (start.top + start.height / 2);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        flyer.style.transform = `translate(${dx}px, ${dy - 40}px) scale(0.3)`;
+        flyer.style.opacity = '0';
+      });
+    });
+
+    const cleanup = () => flyer.remove();
+    flyer.addEventListener('transitionend', cleanup, { once: true });
+    setTimeout(cleanup, 900);
+    setTimeout(bumpCartIcon, 620);
+  }
+
   // ---- Product modal ----
   const modal = document.querySelector('[data-product-modal]');
 
@@ -237,11 +275,16 @@ const { whatsappNumber } = Astro.props;
 
     const addCartBtn = modal.querySelector('[data-modal-add-cart]');
     addCartBtn.onclick = () => {
+      flyToCart(addCartBtn);
       addToCart(product.slug);
       addCartBtn.textContent = 'Agregado ✓';
+
+      modal.classList.add('is-closing');
       setTimeout(() => {
+        modal.classList.remove('is-closing');
+        closeProductModal();
         addCartBtn.textContent = 'Añadir al carrito';
-      }, 1400);
+      }, 420);
     };
 
     modal.classList.add('is-open');

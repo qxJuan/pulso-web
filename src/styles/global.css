@@ -176,7 +176,7 @@ details[open] summary .plus-icon {
    ============================================================ */
 .catalog-track {
   display: flex;
-  gap: 1px;
+  gap: 1rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -189,13 +189,14 @@ details[open] summary .plus-icon {
 
 .catalog-card {
   scroll-snap-align: start;
-  flex: 0 0 min(88vw, 380px);
+  flex: 0 0 min(78vw, 320px);
   min-height: 480px;
+  border-radius: 24px;
 }
 
 @media (min-width: 768px) {
   .catalog-card {
-    flex: 0 0 calc((100% - 2px) / 3);
+    flex: 0 0 calc((100% - 2rem) / 3);
   }
 }
 
@@ -228,6 +229,7 @@ details[open] summary .plus-icon {
   inset: 0;
   background: rgba(13, 13, 13, 0.75);
   backdrop-filter: blur(3px);
+  transition: opacity 0.35s ease;
 }
 
 .product-modal-panel {
@@ -243,6 +245,49 @@ details[open] summary .plus-icon {
   border: 1px solid rgba(245, 240, 232, 0.12);
   border-radius: 28px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.product-modal.is-closing .product-modal-backdrop {
+  opacity: 0;
+}
+
+.product-modal.is-closing .product-modal-panel {
+  opacity: 0;
+  transform: scale(0.96) translateY(8px);
+}
+
+/* Add-to-cart "fly to cart" animation */
+.cart-flyer {
+  position: fixed;
+  z-index: 80;
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  margin-top: -20px;
+  border-radius: 999px;
+  background: #F5F0E8;
+  color: #0D0D0D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease-in 0.05s;
+  pointer-events: none;
+}
+
+@keyframes cartBump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+
+.cart-bump {
+  animation: cartBump 0.42s ease;
 }
 
 @media (min-width: 768px) {

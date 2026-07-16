@@ -28,9 +28,9 @@ export interface Product {
 export const products: Product[] = [
   {
     slug: 'pro-3',
-    badge: 'Insignia',
+    badge: 'El más nuevo',
     name: 'Pro 3',
-    tagline: 'Traducción en tiempo real, sin apps de por medio.',
+    tagline: 'Nueva experiencia premium y más avanzada.',
     originalPrice: 125000,
     price: 100000,
     warrantyText: '1 mes de garantía',
@@ -57,6 +57,7 @@ export const products: Product[] = [
   },
   {
     slug: 'pro-2',
+    badge: 'Clásico',
     name: 'Pro 2',
     tagline: 'El equilibrio entre sonido curado y precio justo.',
     originalPrice: 105000,
@@ -83,6 +84,7 @@ export const products: Product[] = [
   },
   {
     slug: 'serie-4',
+    badge: 'El más vendido',
     name: 'Serie 4',
     tagline: 'Los esenciales PULSO, sin vueltas.',
     originalPrice: 105000,
