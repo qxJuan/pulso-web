@@ -46,4 +46,6 @@ No empieces a programar el rediseño sin una maqueta aprobada por Juan.
 
 ## Fuera de este repositorio
 
+- Datos de la marca (precios, tono, preguntas de clientes): en Notion, Pulso → Ficha de marca PULSO.
+  Es la fuente de verdad: si un precio cambia ahí, actualiza `src/data/products.ts` para que coincidan.
 - Campañas de Meta Ads: en Notion, Pulso → Meta Ads (ficha de cuenta, método del reporte y bitácora).
